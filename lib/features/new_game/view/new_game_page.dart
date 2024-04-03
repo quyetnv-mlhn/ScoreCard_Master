@@ -18,8 +18,28 @@ class NewGamePage extends StatelessWidget {
   }
 }
 
-class NewGameView extends StatelessWidget {
+class NewGameView extends StatefulWidget {
   const NewGameView({super.key});
+
+  @override
+  State<NewGameView> createState() => _NewGameViewState();
+}
+
+class _NewGameViewState extends State<NewGameView> {
+  late TextEditingController valueGameRuleController;
+  GameRule gameRuleSelected = GameRule.normal;
+
+  @override
+  void initState() {
+    super.initState();
+    valueGameRuleController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    valueGameRuleController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +126,7 @@ class NewGameView extends StatelessWidget {
                   .toList(),
               onChanged: (int? value) {
                 if (value != null) {
-                  context
-                      .read<NewGameBloc>()
-                      .add(NewGameChangeQuantityPlayer(value));
+                  context.read<NewGameBloc>().add(NewGameChangeQuantityPlayer(value));
                 }
               },
               isExpanded: true,
@@ -194,10 +212,6 @@ class NewGameView extends StatelessWidget {
       value: BlocProvider.of<NewGameBloc>(context),
       child: BlocBuilder<NewGameBloc, NewGameState>(
         builder: (context, state) {
-          GameRule gameRule = state.gameRule;
-          String unit = getUnit(gameRule);
-          TextEditingController gameRuleValueController =
-              TextEditingController(text: state.gameRuleValue);
           return AlertDialog(
             scrollable: true,
             shape: const RoundedRectangleBorder(
@@ -211,13 +225,14 @@ class NewGameView extends StatelessWidget {
             titlePadding: const EdgeInsets.only(top: largePadding),
             content: SizedBox(
               width: MediaQuery.of(context).size.width * 0.95,
-              child: Column(
-                children: [
-                  _buildAllOptionGameRule(
-                      context, gameRule, unit, gameRuleValueController),
-                  _buildAllActionButton(context, gameRuleValueController),
-                ],
-              ),
+              child: StatefulBuilder(builder: (context, setState) {
+                return Column(
+                  children: [
+                    _buildAllOptionGameRule(context, setState),
+                    _buildAllActionButton(context),
+                  ],
+                );
+              }),
             ),
             contentPadding: const EdgeInsets.all(smallPadding),
           );
@@ -248,27 +263,21 @@ class NewGameView extends StatelessWidget {
     }
   }
 
-  Row _buildAllActionButton(
-    BuildContext context,
-    TextEditingController gameRuleValueController,
-  ) {
+  Row _buildAllActionButton(BuildContext context) {
     return Row(
       children: [
         _buildActionButton(
           text: 'Save',
           onPressed: () {
-            if (gameRuleValueController.text.isNotEmpty) {
-              context
-                  .read<NewGameBloc>()
-                  .add(NewGameUpdateRuleValue(gameRuleValueController.text));
-              Navigator.pop(context);
-            } else {
+            context.read<NewGameBloc>().add(NewGameSelectGameRule(gameRuleSelected));
+            if ((gameRuleSelected != GameRule.normal) && valueGameRuleController.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Please enter a value'),
-                ),
+                const SnackBar(content: Text('Please enter a value')),
               );
+              return;
             }
+            context.read<NewGameBloc>().add(NewGameUpdateRuleValue(valueGameRuleController.text));
+            Navigator.pop(context);
           },
         ),
         const SizedBox(width: smallPadding),
@@ -284,9 +293,7 @@ class NewGameView extends StatelessWidget {
 
   Row _buildAllOptionGameRule(
     BuildContext context,
-    GameRule gameRule,
-    String unit,
-    TextEditingController controller,
+    void Function(void Function()) setState,
   ) {
     return Row(
       children: [
@@ -295,28 +302,29 @@ class NewGameView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildOptionGameRule(
-                  context, gameRule, GameRule.normal, controller),
-              _buildOptionGameRule(
-                  context, gameRule, GameRule.limitGame, controller),
-              _buildOptionGameRule(
-                  context, gameRule, GameRule.limitScore, controller),
+              _buildOptionGameRule(context, GameRule.normal, setState),
+              _buildOptionGameRule(context, GameRule.limitGame, setState),
+              _buildOptionGameRule(context, GameRule.limitScore, setState),
             ],
           ),
         ),
         const SizedBox(width: smallPadding),
-        if (gameRule != GameRule.normal)
+        if (gameRuleSelected != GameRule.normal)
           Flexible(
             flex: 1,
             child: Column(
               children: [
                 TextField(
-                  controller: controller,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    signed: false,
+                    decimal: false,
+                  ),
+                  controller: valueGameRuleController,
                   autofocus: true,
                   textAlign: TextAlign.center,
                   style: AppStyle.mediumTextStyle(size: 30),
                 ),
-                Text(unit, style: AppStyle.boldTextStyle()),
+                Text(getUnit(gameRuleSelected), style: AppStyle.boldTextStyle()),
               ],
             ),
           ),
@@ -340,9 +348,8 @@ class NewGameView extends StatelessWidget {
 
   ListTile _buildOptionGameRule(
     BuildContext context,
-    GameRule groupValue,
     GameRule gameRule,
-    TextEditingController controller,
+    void Function(void Function()) setState,
   ) {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
@@ -354,12 +361,12 @@ class NewGameView extends StatelessWidget {
       ),
       leading: Radio<GameRule>(
         value: gameRule,
-        groupValue: groupValue,
+        groupValue: gameRuleSelected,
         onChanged: (GameRule? value) {
-          controller.clear();
-          context
-              .read<NewGameBloc>()
-              .add(NewGameSelectGameRule(value ?? GameRule.normal));
+          valueGameRuleController.clear();
+          setState(() {
+            gameRuleSelected = value ?? GameRule.normal;
+          });
         },
         visualDensity: const VisualDensity(
           horizontal: VisualDensity.minimumDensity,
