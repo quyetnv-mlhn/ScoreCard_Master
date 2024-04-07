@@ -1,10 +1,11 @@
 import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
+import 'package:calculate_card_score/features/new_game/widgets/action_button.dart';
+import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
 import 'package:calculate_card_score/features/new_game/widgets/ordinal_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class NewGamePage extends StatelessWidget {
   const NewGamePage({super.key});
@@ -13,7 +14,7 @@ class NewGamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => NewGameBloc(),
-      child: const NewGameView(),
+      child: const SafeArea(child: NewGameView()),
     );
   }
 }
@@ -28,6 +29,8 @@ class NewGameView extends StatefulWidget {
 class _NewGameViewState extends State<NewGameView> {
   late TextEditingController valueGameRuleController;
   GameRule gameRuleSelected = GameRule.normal;
+  bool isShowError = false;
+  final quantityPlayer = [2, 3, 4, 5];
 
   @override
   void initState() {
@@ -43,8 +46,6 @@ class _NewGameViewState extends State<NewGameView> {
 
   @override
   Widget build(BuildContext context) {
-    final quantityPlayer = [2, 3, 4, 5];
-
     return Scaffold(
       backgroundColor: primaryLightColor,
       appBar: AppBar(
@@ -69,6 +70,8 @@ class _NewGameViewState extends State<NewGameView> {
                 _buildChooseQuantityPlayer(context, state, quantityPlayer),
                 _buildGridView(state),
                 _buildGameRule(context, state),
+                const Spacer(),
+                _buildAllButtonStart(context),
               ],
             ),
           );
@@ -88,7 +91,7 @@ class _NewGameViewState extends State<NewGameView> {
       ),
       itemCount: state.playerQuantity,
       itemBuilder: (BuildContext ctx, index) {
-        return _buildInfoPlayer(index);
+        return InfoPlayer(index: index);
       },
     );
   }
@@ -134,37 +137,6 @@ class _NewGameViewState extends State<NewGameView> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildInfoPlayer(int index) {
-    return SizedBox(
-      height: 100,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(
-            'assets/images/camera-add.svg',
-            width: 50,
-            height: 50,
-          ),
-          TextField(
-            style: AppStyle.mediumTextStyle(),
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              hintText: 'Player ${index + 1}',
-              hintStyle: AppStyle.mediumTextStyle(color: textColor),
-              alignLabelWithHint: true,
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: smallPadding,
-                horizontal: largePadding,
-              ),
-              border: const UnderlineInputBorder(),
-              isDense: true,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -229,7 +201,7 @@ class _NewGameViewState extends State<NewGameView> {
                 return Column(
                   children: [
                     _buildAllOptionGameRule(context, setState),
-                    _buildAllActionButton(context),
+                    _buildAllActionButton(context, setState),
                   ],
                 );
               }),
@@ -263,30 +235,45 @@ class _NewGameViewState extends State<NewGameView> {
     }
   }
 
-  Row _buildAllActionButton(BuildContext context) {
-    return Row(
+  Widget _buildAllActionButton(
+    BuildContext context,
+    void Function(void Function()) setState,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildActionButton(
-          text: 'Save',
-          onPressed: () {
-            context.read<NewGameBloc>().add(NewGameSelectGameRule(gameRuleSelected));
-            if ((gameRuleSelected != GameRule.normal) && valueGameRuleController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Please enter a value')),
-              );
-              return;
-            }
-            context.read<NewGameBloc>().add(NewGameUpdateRuleValue(valueGameRuleController.text));
-            Navigator.pop(context);
-          },
+        if (isShowError)
+          Text(
+            ' Please fill the value',
+            style: AppStyle.boldTextStyle(color: Colors.red),
+          ),
+        Row(
+          children: [
+            ActionButton(
+              color: primaryColor,
+              textColor: primaryLightColor,
+              text: 'Save',
+              onPressed: () {
+                if ((gameRuleSelected != GameRule.normal) && valueGameRuleController.text.isEmpty) {
+                  setState(() {
+                    isShowError = true;
+                  });
+                  return;
+                }
+                context.read<NewGameBloc>().add(NewGameSelectGameRule(gameRuleSelected));
+                context.read<NewGameBloc>().add(NewGameUpdateRuleValue(valueGameRuleController.text));
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(width: smallPadding),
+            ActionButton(
+              text: 'Cancel',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
         ),
-        const SizedBox(width: smallPadding),
-        _buildActionButton(
-          text: 'Cancel',
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )
       ],
     );
   }
@@ -323,26 +310,15 @@ class _NewGameViewState extends State<NewGameView> {
                   autofocus: true,
                   textAlign: TextAlign.center,
                   style: AppStyle.mediumTextStyle(size: 30),
+                  onChanged: (value) {
+                    if (value.isNotEmpty) setState(() => isShowError = false);
+                  },
                 ),
                 Text(getUnit(gameRuleSelected), style: AppStyle.boldTextStyle()),
               ],
             ),
           ),
       ],
-    );
-  }
-
-  Widget _buildActionButton({
-    required String text,
-    Color color = otherColor,
-    void Function()? onPressed,
-  }) {
-    return Expanded(
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(backgroundColor: color, elevation: 10),
-        child: Text(text, style: AppStyle.mediumTextStyle()),
-      ),
     );
   }
 
@@ -374,6 +350,28 @@ class _NewGameViewState extends State<NewGameView> {
         ),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
+    );
+  }
+
+  _buildAllButtonStart(BuildContext context) {
+    return Row(
+      children: [
+        ActionButton(
+          text: 'QUICK START',
+          textColor: primaryLightColor,
+          fontWeight: FontWeight.w800,
+          color: primaryColor,
+          iconData: Icons.add,
+          onPressed: () {},
+        ),
+        const SizedBox(width: smallPadding),
+        ActionButton(
+          text: 'START',
+          iconData: Icons.play_arrow,
+          fontWeight: FontWeight.w800,
+          onPressed: () {},
+        )
+      ],
     );
   }
 }
