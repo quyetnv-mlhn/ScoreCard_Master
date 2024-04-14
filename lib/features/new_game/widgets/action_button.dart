@@ -16,7 +16,7 @@ class ActionButton extends StatelessWidget {
     this.color = otherColor,
     this.textColor = primaryColor,
     this.onPressed,
-    this.fontWeight = FontWeight.w400,
+    this.fontWeight = FontWeight.w500,
     this.iconData,
   });
 
@@ -31,7 +31,9 @@ class ActionButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(iconData, color: textColor),
+            iconData != null
+                ? Icon(iconData, color: textColor)
+                : const SizedBox.shrink(),
             Expanded(
               child: Text(
                 text,

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class InfoPlayer extends StatelessWidget {
-  const InfoPlayer({super.key, required this.index});
+  const InfoPlayer({super.key, required this.index, this.onChanged});
 
   final int index;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class InfoPlayer extends StatelessWidget {
               border: const UnderlineInputBorder(),
               isDense: true,
             ),
+            onChanged: onChanged,
           ),
         ],
       ),

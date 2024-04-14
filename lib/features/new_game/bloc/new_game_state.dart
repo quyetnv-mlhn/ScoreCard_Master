@@ -39,5 +39,9 @@ final class NewGameState extends Equatable {
   }
 
   @override
-  List<Object> get props => [playerQuantity, gameRule, gameRuleValue];
+  List<Object> get props => [
+        playerQuantity,
+        gameRule,
+        gameRuleValue,
+      ];
 }

@@ -1,11 +1,13 @@
 import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:calculate_card_score/core/constants/app_style.dart';
+import 'package:calculate_card_score/features/list_player/view/list_player.dart';
 import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
 import 'package:calculate_card_score/features/new_game/widgets/action_button.dart';
-import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
 import 'package:calculate_card_score/features/new_game/widgets/ordinal_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+part 'new_game_page_mixin.dart';
 
 class NewGamePage extends StatelessWidget {
   const NewGamePage({super.key});
@@ -26,24 +28,7 @@ class NewGameView extends StatefulWidget {
   State<NewGameView> createState() => _NewGameViewState();
 }
 
-class _NewGameViewState extends State<NewGameView> {
-  late TextEditingController valueGameRuleController;
-  GameRule gameRuleSelected = GameRule.normal;
-  bool isShowError = false;
-  final quantityPlayer = [2, 3, 4, 5];
-
-  @override
-  void initState() {
-    super.initState();
-    valueGameRuleController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    valueGameRuleController.dispose();
-  }
-
+class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +53,7 @@ class _NewGameViewState extends State<NewGameView> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _buildChooseQuantityPlayer(context, state, quantityPlayer),
-                _buildGridView(state),
+                ListPlayer(playerQuantity: state.playerQuantity),
                 _buildGameRule(context, state),
                 const Spacer(),
                 _buildAllButtonStart(context),
@@ -77,22 +62,6 @@ class _NewGameViewState extends State<NewGameView> {
           );
         },
       ),
-    );
-  }
-
-  GridView _buildGridView(NewGameState state) {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: largePadding,
-        mainAxisSpacing: smallPadding,
-      ),
-      itemCount: state.playerQuantity,
-      itemBuilder: (BuildContext ctx, index) {
-        return InfoPlayer(index: index);
-      },
     );
   }
 
@@ -127,11 +96,7 @@ class _NewGameViewState extends State<NewGameView> {
                         ),
                       ))
                   .toList(),
-              onChanged: (int? value) {
-                if (value != null) {
-                  context.read<NewGameBloc>().add(NewGameChangeQuantityPlayer(value));
-                }
-              },
+              onChanged: onChangeChooseQuantityPlayer,
               isExpanded: true,
             ),
           ),
@@ -213,28 +178,6 @@ class _NewGameViewState extends State<NewGameView> {
     );
   }
 
-  String getUnit(GameRule gameRule) {
-    switch (gameRule) {
-      case GameRule.limitGame:
-        return 'games';
-      case GameRule.limitScore:
-        return 'points';
-      case GameRule.normal:
-        return '';
-    }
-  }
-
-  String getTypeOfGameRule(GameRule gameRule) {
-    switch (gameRule) {
-      case GameRule.limitGame:
-        return 'Max matches';
-      case GameRule.limitScore:
-        return 'Max score';
-      default:
-        return GameRule.normal.title;
-    }
-  }
-
   Widget _buildAllActionButton(
     BuildContext context,
     void Function(void Function()) setState,
@@ -253,17 +196,7 @@ class _NewGameViewState extends State<NewGameView> {
               color: primaryColor,
               textColor: primaryLightColor,
               text: 'Save',
-              onPressed: () {
-                if ((gameRuleSelected != GameRule.normal) && valueGameRuleController.text.isEmpty) {
-                  setState(() {
-                    isShowError = true;
-                  });
-                  return;
-                }
-                context.read<NewGameBloc>().add(NewGameSelectGameRule(gameRuleSelected));
-                context.read<NewGameBloc>().add(NewGameUpdateRuleValue(valueGameRuleController.text));
-                Navigator.pop(context);
-              },
+              onPressed: onPressedSaveGameRule,
             ),
             const SizedBox(width: smallPadding),
             ActionButton(
@@ -314,7 +247,8 @@ class _NewGameViewState extends State<NewGameView> {
                     if (value.isNotEmpty) setState(() => isShowError = false);
                   },
                 ),
-                Text(getUnit(gameRuleSelected), style: AppStyle.boldTextStyle()),
+                Text(getUnit(gameRuleSelected),
+                    style: AppStyle.boldTextStyle()),
               ],
             ),
           ),
