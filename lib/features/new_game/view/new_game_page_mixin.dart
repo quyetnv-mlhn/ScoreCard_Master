@@ -70,6 +70,18 @@ mixin NewGamePageMixin on State<NewGameView> {
         MaterialPageRoute(builder: (context) => const GameDetailPage()));
   }
 
+  void onQuickStartPressed(BuildContext context, NewGameState state) {
+    for (int i = 0; i < state.playerQuantity; ++i) {
+      playerRepository.addPlayer(
+          Player(name: String.fromCharCode(('A'.codeUnitAt(0) + i))));
+    }
+    for (var player in playerRepository.listPlayer) {
+      print(player.toJson());
+    }
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GameDetailPage()));
+  }
+
   String? validateNameList(List<String> nameList) {
     if (nameList.isEmpty) {
       return 'Name list is empty';

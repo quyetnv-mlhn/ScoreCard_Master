@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:calculate_card_score/data/models/player_model.dart';
@@ -34,36 +36,39 @@ class NewGameView extends StatefulWidget {
 class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: primaryLightColor,
-      appBar: AppBar(
-        title: Text(
-          'New game',
-          style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20.0),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: primaryLightColor,
+        appBar: AppBar(
+          title: Text(
+            'New game',
+            style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20.0),
+          ),
+          backgroundColor: primaryColor,
+          automaticallyImplyLeading: true,
         ),
-        backgroundColor: primaryColor,
-        automaticallyImplyLeading: true,
-      ),
-      body: BlocBuilder<NewGameBloc, NewGameState>(
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: smallPadding,
-              horizontal: largePadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildChooseQuantityPlayer(context, state, quantityPlayer),
-                _buildListPlayer(state.playerQuantity),
-                _buildGameRule(context, state),
-                const Spacer(),
-                _buildAllButtonStart(context, state),
-              ],
-            ),
-          );
-        },
+        body: BlocBuilder<NewGameBloc, NewGameState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: smallPadding,
+                horizontal: largePadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildChooseQuantityPlayer(context, state, quantityPlayer),
+                  _buildListPlayer(state.playerQuantity),
+                  _buildGameRule(context, state),
+                  const Spacer(),
+                  _buildAllButtonStart(context, state),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -299,7 +304,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
           fontWeight: FontWeight.w800,
           color: primaryColor,
           iconData: Icons.add,
-          onPressed: () {},
+          onPressed: () => onQuickStartPressed(context, state),
         ),
         const SizedBox(width: smallPadding),
         ActionButton(
@@ -330,4 +335,5 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
       },
     );
   }
+  
 }

@@ -4,11 +4,11 @@ part 'player_model.g.dart';
 
 @JsonSerializable()
 class Player {
-  String name;
+  final String name;
+  final List<int>? scores;
+  final int? totalScore;
 
-  Player({
-    required this.name,
-  });
+  Player({required this.name, this.scores, this.totalScore});
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
 
