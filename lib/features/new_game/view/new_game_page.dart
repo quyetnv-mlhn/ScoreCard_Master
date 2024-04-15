@@ -1,9 +1,12 @@
 import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:calculate_card_score/core/constants/app_style.dart';
-import 'package:calculate_card_score/features/list_player/view/list_player.dart';
+import 'package:calculate_card_score/data/models/player_model.dart';
+import 'package:calculate_card_score/domain/repositories/player_repository.dart';
+import 'package:calculate_card_score/features/game_detail/view/game_detail_page.dart';
 import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
-import 'package:calculate_card_score/features/new_game/widgets/action_button.dart';
-import 'package:calculate_card_score/features/new_game/widgets/ordinal_number.dart';
+import 'package:calculate_card_score/widgets/action_button.dart';
+import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
+import 'package:calculate_card_score/widgets/ordinal_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,10 +56,10 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _buildChooseQuantityPlayer(context, state, quantityPlayer),
-                ListPlayer(playerQuantity: state.playerQuantity),
+                _buildListPlayer(state.playerQuantity),
                 _buildGameRule(context, state),
                 const Spacer(),
-                _buildAllButtonStart(context),
+                _buildAllButtonStart(context, state),
               ],
             ),
           );
@@ -287,7 +290,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
     );
   }
 
-  _buildAllButtonStart(BuildContext context) {
+  _buildAllButtonStart(BuildContext context, NewGameState state) {
     return Row(
       children: [
         ActionButton(
@@ -303,9 +306,28 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
           text: 'START',
           iconData: Icons.play_arrow,
           fontWeight: FontWeight.w800,
-          onPressed: () {},
+          onPressed: () => onStartPressed(context, state),
         )
       ],
+    );
+  }
+
+  Widget _buildListPlayer(int playerQuantity) {
+    return GridView.builder(
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 200,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: largePadding,
+        mainAxisSpacing: smallPadding,
+      ),
+      itemCount: playerQuantity,
+      itemBuilder: (BuildContext ctx, index) {
+        return InfoPlayer(
+          index: index,
+          textEditingController: listNamePlayerControllers[index],
+        );
+      },
     );
   }
 }

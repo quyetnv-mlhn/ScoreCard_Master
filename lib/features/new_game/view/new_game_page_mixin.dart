@@ -5,17 +5,25 @@ mixin NewGamePageMixin on State<NewGameView> {
   GameRule gameRuleSelected = GameRule.normal;
   bool isShowError = false;
   final quantityPlayer = [2, 3, 4, 5];
+  List<TextEditingController> listNamePlayerControllers = [];
+  final PlayerRepository playerRepository = PlayerRepository();
 
   @override
   void initState() {
     super.initState();
     valueGameRuleController = TextEditingController();
+    for (int i = 0; i < 5; ++i) {
+      listNamePlayerControllers.add(TextEditingController());
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     valueGameRuleController.dispose();
+    for (var nameController in listNamePlayerControllers) {
+      nameController.dispose();
+    }
   }
 
   void onChangeChooseQuantityPlayer(int? value) {
@@ -37,6 +45,48 @@ mixin NewGamePageMixin on State<NewGameView> {
         .read<NewGameBloc>()
         .add(NewGameUpdateRuleValue(valueGameRuleController.text));
     Navigator.pop(context);
+  }
+
+  void onStartPressed(BuildContext context, NewGameState state) {
+    List<String> nameList = [];
+    for (int i = 0; i < state.playerQuantity; ++i) {
+      nameList.add(listNamePlayerControllers[i].text);
+    }
+    final error = validateNameList(nameList);
+    if (error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error)),
+      );
+      return;
+    }
+    for (int i = 0; i < state.playerQuantity; ++i) {
+      playerRepository
+          .addPlayer(Player(name: listNamePlayerControllers[i].text));
+    }
+    for (var player in playerRepository.listPlayer) {
+      print(player.toJson());
+    }
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GameDetailPage()));
+  }
+
+  String? validateNameList(List<String> nameList) {
+    if (nameList.isEmpty) {
+      return 'Name list is empty';
+    }
+
+    Set<String> nameSet = {};
+
+    for (String name in nameList) {
+      if (name.isEmpty) {
+        return 'Name cannot be empty';
+      }
+      if (nameSet.contains(name)) {
+        return 'Duplicate names are not allowed';
+      }
+      nameSet.add(name);
+    }
+    return null;
   }
 
   String getUnit(GameRule gameRule) {

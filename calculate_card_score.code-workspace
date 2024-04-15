@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../flutter-clean-architecture-example"
+		}
+	],
+	"settings": {
+	}
+}

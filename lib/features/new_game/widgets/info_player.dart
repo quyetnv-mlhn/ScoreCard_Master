@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class InfoPlayer extends StatelessWidget {
-  const InfoPlayer({super.key, required this.index, this.onChanged});
+  const InfoPlayer({super.key, required this.index, this.onChanged, required this.textEditingController});
 
   final int index;
   final void Function(String)? onChanged;
+  final TextEditingController textEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class InfoPlayer extends StatelessWidget {
             height: 50,
           ),
           TextField(
+            controller: textEditingController,
             style: AppStyle.mediumTextStyle(),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
