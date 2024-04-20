@@ -26,13 +26,13 @@ mixin NewGamePageMixin on State<NewGameView> {
     }
   }
 
-  void onChangeChooseQuantityPlayer(int? value) {
+  void _onChangeChooseQuantityPlayer(int? value) {
     if (value != null) {
       context.read<NewGameBloc>().add(NewGameChangeQuantityPlayer(value));
     }
   }
 
-  void onPressedSaveGameRule() {
+  void _onPressedSaveGameRule(void Function(void Function()) setState) {
     if ((gameRuleSelected != GameRule.normal) &&
         valueGameRuleController.text.isEmpty) {
       setState(() {
@@ -47,15 +47,18 @@ mixin NewGamePageMixin on State<NewGameView> {
     Navigator.pop(context);
   }
 
-  void onStartPressed(BuildContext context, NewGameState state) {
+  void _onStartPressed(BuildContext context, NewGameState state) {
     List<String> nameList = [];
     for (int i = 0; i < state.playerQuantity; ++i) {
       nameList.add(listNamePlayerControllers[i].text);
     }
-    final error = validateNameList(nameList);
+    final error = _validateNameList(nameList);
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
+        SnackBar(
+          content: Text(error),
+          duration: const Duration(seconds: 1),
+        ),
       );
       return;
     }
@@ -70,7 +73,7 @@ mixin NewGamePageMixin on State<NewGameView> {
         MaterialPageRoute(builder: (context) => const GameDetailPage()));
   }
 
-  void onQuickStartPressed(BuildContext context, NewGameState state) {
+  void _onQuickStartPressed(BuildContext context, NewGameState state) {
     for (int i = 0; i < state.playerQuantity; ++i) {
       playerRepository.addPlayer(
           Player(name: String.fromCharCode(('A'.codeUnitAt(0) + i))));
@@ -82,7 +85,7 @@ mixin NewGamePageMixin on State<NewGameView> {
         MaterialPageRoute(builder: (context) => const GameDetailPage()));
   }
 
-  String? validateNameList(List<String> nameList) {
+  String? _validateNameList(List<String> nameList) {
     if (nameList.isEmpty) {
       return 'Name list is empty';
     }
@@ -101,7 +104,7 @@ mixin NewGamePageMixin on State<NewGameView> {
     return null;
   }
 
-  String getUnit(GameRule gameRule) {
+  String _getUnit(GameRule gameRule) {
     switch (gameRule) {
       case GameRule.limitGame:
         return 'games';
@@ -112,7 +115,7 @@ mixin NewGamePageMixin on State<NewGameView> {
     }
   }
 
-  String getTypeOfGameRule(GameRule gameRule) {
+  String _getTypeOfGameRule(GameRule gameRule) {
     switch (gameRule) {
       case GameRule.limitGame:
         return 'Max matches';

@@ -10,7 +10,7 @@ Round _$RoundFromJson(Map<String, dynamic> json) => Round(
       id: json['id'] as int?,
       roundNumber: json['roundNumber'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      scoreboardId: json['scoreboardId'] as int,
+      scoreboardId: json['scoreboardId'] as int?,
       players: (json['players'] as List<dynamic>)
           .map((e) => Player.fromJson(e as Map<String, dynamic>))
           .toList(),

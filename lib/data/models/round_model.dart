@@ -5,17 +5,17 @@ part 'round_model.g.dart';
 
 @JsonSerializable()
 class Round {
-  final int? id;
-  final int roundNumber;
-  final DateTime createdAt;
-  final int scoreboardId;
-  final List<Player> players;
+  int? id;
+  int roundNumber;
+  DateTime createdAt;
+  int? scoreboardId;
+  List<Player> players;
 
   Round({
     this.id,
     required this.roundNumber,
     required this.createdAt,
-    required this.scoreboardId,
+    this.scoreboardId,
     required this.players,
   });
 

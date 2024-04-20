@@ -9,5 +9,6 @@ const otherColor = Color.fromRGBO(237, 235, 246, 1);
 //size
 const primaryFontSize = 14.0;
 const mediumFontSize = 15.0;
+const largeFontSize = 18.0;
 const smallPadding = 8.0;
 const largePadding = 16.0;

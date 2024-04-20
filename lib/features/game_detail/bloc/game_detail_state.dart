@@ -1,10 +1,18 @@
 part of 'game_detail_bloc.dart';
 
-sealed class GameDetailState extends Equatable {
-  const GameDetailState();
-  
+abstract class GameDetailState extends Equatable {
+  const GameDetailState({required this.rounds});
+
+  final List<Round> rounds;
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [rounds];
 }
 
-final class GameDetailInitial extends GameDetailState {}
+class GameDetailInitial extends GameDetailState {
+  const GameDetailInitial({required super.rounds});
+}
+
+class GameDetailAddedRound extends GameDetailState {
+  const GameDetailAddedRound({required super.rounds});
+}

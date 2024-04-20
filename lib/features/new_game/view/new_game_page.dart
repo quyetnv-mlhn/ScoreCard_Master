@@ -8,7 +8,7 @@ import 'package:calculate_card_score/features/game_detail/view/game_detail_page.
 import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
 import 'package:calculate_card_score/widgets/action_button.dart';
 import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
-import 'package:calculate_card_score/widgets/ordinal_number.dart';
+import 'package:calculate_card_score/widgets/circle_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -80,7 +80,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
   ) {
     return Row(
       children: [
-        const OrdinalNumber(number: 1),
+        const CircleAvatarCustom(number: 1),
         const SizedBox(width: smallPadding),
         Expanded(
           child: Text(
@@ -104,7 +104,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
                         ),
                       ))
                   .toList(),
-              onChanged: onChangeChooseQuantityPlayer,
+              onChanged: _onChangeChooseQuantityPlayer,
               isExpanded: true,
             ),
           ),
@@ -118,7 +118,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
     final gameRuleValue = state.gameRuleValue;
     return Row(
       children: [
-        const OrdinalNumber(number: 2),
+        const CircleAvatarCustom(number: 2),
         const SizedBox(width: smallPadding),
         Text(
           'Game rule',
@@ -131,7 +131,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
           child: Row(
             children: [
               Text(
-                '${getTypeOfGameRule(gameRule)} ${gameRuleValue != '' ? ': $gameRuleValue ${getUnit(gameRule)}' : ''}',
+                '${_getTypeOfGameRule(gameRule)} ${gameRuleValue != '' ? ': $gameRuleValue ${_getUnit(gameRule)}' : ''}',
                 style: AppStyle.mediumTextStyle(),
               ),
               const SizedBox(width: smallPadding),
@@ -204,7 +204,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
               color: primaryColor,
               textColor: primaryLightColor,
               text: 'Save',
-              onPressed: onPressedSaveGameRule,
+              onPressed: () => _onPressedSaveGameRule(setState),
             ),
             const SizedBox(width: smallPadding),
             ActionButton(
@@ -255,7 +255,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
                     if (value.isNotEmpty) setState(() => isShowError = false);
                   },
                 ),
-                Text(getUnit(gameRuleSelected),
+                Text(_getUnit(gameRuleSelected),
                     style: AppStyle.boldTextStyle()),
               ],
             ),
@@ -304,14 +304,14 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
           fontWeight: FontWeight.w800,
           color: primaryColor,
           iconData: Icons.add,
-          onPressed: () => onQuickStartPressed(context, state),
+          onPressed: () => _onQuickStartPressed(context, state),
         ),
         const SizedBox(width: smallPadding),
         ActionButton(
           text: 'START',
           iconData: Icons.play_arrow,
           fontWeight: FontWeight.w800,
-          onPressed: () => onStartPressed(context, state),
+          onPressed: () => _onStartPressed(context, state),
         )
       ],
     );
@@ -335,5 +335,4 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
       },
     );
   }
-  
 }

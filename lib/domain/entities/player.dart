@@ -1,9 +1,9 @@
-class Player {
-  final int id;
-  final String name;
+// class Player {
+//   final int id;
+//   final String name;
 
-  Player({
-    required this.id,
-    required this.name,
-  });
-}
+//   Player({
+//     required this.id,
+//     required this.name,
+//   });
+// }
