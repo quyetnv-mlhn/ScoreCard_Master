@@ -6,7 +6,6 @@ mixin NewGamePageMixin on State<NewGameView> {
   bool isShowError = false;
   final quantityPlayer = [2, 3, 4, 5];
   List<TextEditingController> listNamePlayerControllers = [];
-  final PlayerRepository playerRepository = PlayerRepository();
 
   @override
   void initState() {
@@ -47,42 +46,68 @@ mixin NewGamePageMixin on State<NewGameView> {
     Navigator.pop(context);
   }
 
-  void _onStartPressed(BuildContext context, NewGameState state) {
-    List<String> nameList = [];
-    for (int i = 0; i < state.playerQuantity; ++i) {
-      nameList.add(listNamePlayerControllers[i].text);
-    }
-    final error = _validateNameList(nameList);
-    if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error),
-          duration: const Duration(seconds: 1),
-        ),
-      );
-      return;
-    }
-    for (int i = 0; i < state.playerQuantity; ++i) {
-      playerRepository
-          .addPlayer(Player(name: listNamePlayerControllers[i].text));
-    }
-    for (var player in playerRepository.listPlayer) {
-      print(player.toJson());
-    }
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GameDetailPage()));
-  }
+  Future<void> _onStartPressed(
+    BuildContext context,
+    NewGameState state, {
+    bool isQuickStart = false,
+  }) async {
+    var scoreBoardBox = await Hive.openBox(scoreBoardBoxDB);
+    ScoreBoard? boardGame;
 
-  void _onQuickStartPressed(BuildContext context, NewGameState state) {
-    for (int i = 0; i < state.playerQuantity; ++i) {
-      playerRepository.addPlayer(
-          Player(name: String.fromCharCode(('A'.codeUnitAt(0) + i))));
+    if (!context.mounted) return;
+    if (!isQuickStart) {
+      List<String> nameList = [];
+      for (int i = 0; i < state.playerQuantity; ++i) {
+        nameList.add(listNamePlayerControllers[i].text);
+      }
+      final error = _validateNameList(nameList);
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+        return;
+      }
+      boardGame = ScoreBoard(
+        players: List.generate(
+          state.playerQuantity,
+          (index) => Player(
+            name: listNamePlayerControllers[index].text,
+          ),
+        ),
+        currentScore: List.generate(state.playerQuantity,
+            (_) => List.generate(state.playerQuantity, (_) => 0)),
+      );
+    } else {
+      boardGame = ScoreBoard(
+        players: List.generate(
+          state.playerQuantity,
+          (index) => Player(
+            name: String.fromCharCode(('A'.codeUnitAt(0) + index)),
+          ),
+        ),
+        currentScore: List.generate(state.playerQuantity,
+            (_) => List.generate(state.playerQuantity, (_) => 0)),
+      );
     }
-    for (var player in playerRepository.listPlayer) {
-      print(player.toJson());
+
+    try {
+      scoreBoardBox.add(boardGame).then((id) {
+        print("id: $id");
+        final boardGameCopy = boardGame!.copyWith(id: id);
+        print(boardGameCopy.toJson());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GameDetailPage(scoreBoard: boardGameCopy),
+          ),
+        );
+      });
+    } catch (e) {
+      print(e);
     }
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GameDetailPage()));
   }
 
   String? _validateNameList(List<String> nameList) {

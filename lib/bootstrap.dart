@@ -1,8 +1,8 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:calculate_card_score/app/app_bloc_observer.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void bootstrap() {
   FlutterError.onError = (details) {

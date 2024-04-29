@@ -31,7 +31,7 @@ class CircleAvatarCustom extends StatelessWidget {
       throw ArgumentError('number and character cannot be both value');
     }
 
-    final color = backgroundColor == null ? primaryColor : otherColor;
+    final color = backgroundColor == null ? primaryColor : backGroundColor;
 
     Widget? child;
     if (number != null) {
@@ -63,7 +63,7 @@ class CircleAvatarCustom extends StatelessWidget {
         height: radius * 2,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: backgroundColor ?? otherColor,
+          color: backgroundColor ?? backGroundColor,
           shape: BoxShape.circle,
         ),
         child: child,
