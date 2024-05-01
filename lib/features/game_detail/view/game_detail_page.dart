@@ -1,4 +1,8 @@
+import 'package:calculate_card_score/data/data_sources/board_game_api.dart';
+import 'package:calculate_card_score/data/data_sources/local/local_board_game_api.dart';
 import 'package:calculate_card_score/data/models/score_board_model.dart';
+import 'package:calculate_card_score/di/service_locator.dart';
+import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +23,7 @@ part 'game_detail_page_mixin.dart';
 
 class GameDetailPage extends StatelessWidget {
   final ScoreBoard scoreBoard;
+
   const GameDetailPage({
     super.key,
     required this.scoreBoard,
@@ -52,34 +57,46 @@ class _GameDetailViewState extends State<GameDetailView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Game Detail',
-          style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20.0),
-        ),
-        backgroundColor: primaryColor,
-        automaticallyImplyLeading: true,
-        iconTheme: const IconThemeData(color: primaryLightColor),
+      appBar: _buildAppBar(),
+      floatingActionButton: _buildFloatingActionButton(context),
+      body: _buildBody(context),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: Text(
+        'Game Detail',
+        style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showDialogInputScore(context),
-        child: const Icon(Icons.add),
-      ),
-      body: BlocBuilder<GameDetailBloc, GameDetailState>(
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: smallPadding),
-            child: Column(
-              children: [
-                _buildNameAndTotalScore(state),
-                const SizedBox(height: smallPadding),
-                const AppDivider(),
-                Expanded(child: _buildAllRound(state)),
-              ],
-            ),
-          );
-        },
-      ),
+      backgroundColor: primaryColor,
+      automaticallyImplyLeading: true,
+      iconTheme: const IconThemeData(color: primaryLightColor),
+    );
+  }
+
+  FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => _showDialogInputScore(context),
+      child: const Icon(Icons.add),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return BlocBuilder<GameDetailBloc, GameDetailState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: smallPadding),
+          child: Column(
+            children: [
+              _buildNameAndTotalScore(state),
+              const SizedBox(height: smallPadding),
+              const AppDivider(),
+              Expanded(child: _buildAllRound(state)),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -87,47 +104,59 @@ class _GameDetailViewState extends State<GameDetailView>
     return Row(
       children: List.generate(
         countPlayer,
-        (index) => Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: Stack(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/hexagon.svg',
-                      colorFilter: const ColorFilter.mode(
-                        primaryColor,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        (state.scoreBoard.players[index].score ?? 0).toString(),
-                        style: AppStyle.boldTextStyle(
-                          color: textColor,
-                          size: largeFontSize,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: smallPadding),
-              FittedBox(
-                child: Text(
-                  scoreBoard.players[index].name,
-                  style: AppStyle.boldTextStyle(size: largeFontSize),
-                  maxLines: 1,
-                ),
-              ),
-              const SizedBox(height: smallPadding),
-              CircleAvatarCustom(number: index + 1),
-            ],
+        (index) => _buildPlayerInfo(index, state),
+      ),
+    );
+  }
+
+  Widget _buildPlayerInfo(int index, GameDetailState state) {
+    final Player player = state.scoreBoard.players[index];
+
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildHexagonIcon(player),
+          const SizedBox(height: smallPadding),
+          _buildPlayerName(player),
+          const SizedBox(height: smallPadding),
+          CircleAvatarCustom(number: index + 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHexagonIcon(Player player) {
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: Stack(
+        children: [
+          SvgPicture.asset(
+            'assets/images/hexagon.svg',
+            colorFilter: const ColorFilter.mode(primaryColor, BlendMode.srcIn),
           ),
-        ),
+          Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                '${player.score ?? 0}',
+                style: AppStyle.boldTextStyle(
+                    color: textColor, size: largeFontSize),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlayerName(Player player) {
+    return FittedBox(
+      child: Text(
+        player.name,
+        style: AppStyle.boldTextStyle(size: largeFontSize),
+        maxLines: 1,
       ),
     );
   }

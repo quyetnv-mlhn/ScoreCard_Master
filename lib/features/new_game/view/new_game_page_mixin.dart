@@ -51,7 +51,8 @@ mixin NewGamePageMixin on State<NewGameView> {
     NewGameState state, {
     bool isQuickStart = false,
   }) async {
-    var scoreBoardBox = await Hive.openBox(scoreBoardBoxDB);
+    final boardGameRepository = getIt<BoardGameRepository>();
+
     ScoreBoard? boardGame;
 
     if (!context.mounted) return;
@@ -94,7 +95,7 @@ mixin NewGamePageMixin on State<NewGameView> {
     }
 
     try {
-      scoreBoardBox.add(boardGame).then((id) {
+      boardGameRepository.addGame(boardGame).then((id) {
         print("id: $id");
         final boardGameCopy = boardGame!.copyWith(id: id);
         print(boardGameCopy.toJson());

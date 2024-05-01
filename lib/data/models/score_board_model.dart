@@ -7,21 +7,19 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'score_board_model.g.dart';
 
-// ignore: must_be_immutable
 @JsonSerializable()
 @HiveType(typeId: 0)
-// ignore: must_be_immutable
 class ScoreBoard extends Equatable {
   @HiveField(0)
-  int? id;
+  final int? id;
 
   @HiveField(1)
-  List<Player> players;
+  final List<Player> players;
 
   @HiveField(2)
-  List<List<int>>? currentScore;
+  final List<List<int>>? currentScore;
 
-  ScoreBoard({
+  const ScoreBoard({
     this.id,
     required this.players,
     this.currentScore,

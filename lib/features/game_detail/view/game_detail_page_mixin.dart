@@ -44,7 +44,7 @@ mixin GameDetailPageMixin on State<GameDetailView> {
   }
 
   Future<void> _onSaveInputScore() async {
-    var roundBox = await Hive.openBox(roundBoxDB);
+    final boardGameRepository = getIt<BoardGameRepository>();
 
     _checkValidateInputScore();
 
@@ -69,7 +69,7 @@ mixin GameDetailPageMixin on State<GameDetailView> {
         scoreboardId: scoreBoard.id!,
       );
 
-      roundBox.add(round);
+      boardGameRepository.addRound(scoreBoard.id!, round);
 
       if (!mounted) return;
       context.read<GameDetailBloc>().add(GameDetailAddRound(round));

@@ -1,11 +1,16 @@
+import 'package:calculate_card_score/data/models/round_model.dart';
+import 'package:calculate_card_score/data/models/score_board_model.dart';
+
 abstract class BoardGameApi {
   const BoardGameApi();
 
-  void addGame();
+  Future<int> addGame(ScoreBoard scoreBoard);
 
-  void deleteGame();
+  Future<void> deleteGame(int id);
 
-  void addRound();
+  Future<void> addRound(int gameId, Round round);
 
-  void deleteRound();
+  Future<void> deleteRound(int roundId);
+
+  Future<List<dynamic>> getAllGames();
 }

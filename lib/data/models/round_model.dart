@@ -7,27 +7,27 @@ part 'round_model.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 1)
-// ignore: must_be_immutable
+
 class Round extends Equatable {
   @HiveField(0)
-  int id;
+  final int id;
 
   @HiveField(1)
-  DateTime createdAt;
+  final DateTime createdAt;
 
   @HiveField(2)
-  int scoreboardId;
+  final int scoreboardId;
 
   @HiveField(3)
-  List<Player> players;
+  final List<Player> players;
 
   @HiveField(4)
-  String? note;
+  final String? note;
 
   @HiveField(5)
-  bool? isDelete;
+  final bool? isDelete;
 
-  Round({
+  const Round({
     required this.id,
     required this.createdAt,
     required this.scoreboardId,

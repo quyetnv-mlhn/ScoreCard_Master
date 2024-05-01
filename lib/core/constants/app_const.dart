@@ -12,7 +12,3 @@ const mediumFontSize = 15.0;
 const largeFontSize = 18.0;
 const smallPadding = 8.0;
 const largePadding = 16.0;
-
-//box_hive
-const scoreBoardBoxDB = 'score_boards';
-const roundBoxDB = 'rounds';
