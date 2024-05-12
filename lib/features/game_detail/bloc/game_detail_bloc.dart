@@ -18,6 +18,7 @@ class GameDetailBloc extends Bloc<GameDetailEvent, GameDetailState> {
 
   final ScoreBoard scoreBoard;
 
+  // Handles the addition of a new round to the game details. Updates the score and players based on the new round information.
   Future<void> _onGameDetailAddRound(
     GameDetailAddRound event,
     Emitter<GameDetailState> emit,

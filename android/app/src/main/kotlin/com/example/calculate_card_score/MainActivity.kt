@@ -1,6 +1,5 @@
-package com.example.calculate_card_score
+package quyetnv.calculate_score
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
-}
+class MainActivity: FlutterActivity()

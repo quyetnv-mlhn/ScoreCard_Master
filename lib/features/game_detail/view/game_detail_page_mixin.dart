@@ -112,4 +112,16 @@ mixin GameDetailPageMixin on State<GameDetailView> {
       throw Exception('Please choose winner');
     }
   }
+
+  void _onViewResult(GameDetailState state) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameResultPage(
+          scoreBoard: state.scoreBoard,
+          rounds: state.rounds,
+        ),
+      ),
+    );
+  }
 }

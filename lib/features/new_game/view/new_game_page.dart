@@ -9,9 +9,9 @@ import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
 import 'package:calculate_card_score/widgets/action_button.dart';
 import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
 import 'package:calculate_card_score/widgets/circle_avatar.dart';
+import 'package:calculate_card_score/widgets/general_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 part 'new_game_page_mixin.dart';
 
@@ -40,15 +40,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: primaryLightColor,
-        appBar: AppBar(
-          title: Text(
-            'New game',
-            style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20.0),
-          ),
-          backgroundColor: primaryColor,
-          automaticallyImplyLeading: true,
-        ),
+        appBar: const GeneralAppBar(title: 'New Game'),
         body: BlocBuilder<NewGameBloc, NewGameState>(
           builder: (context, state) {
             return Padding(

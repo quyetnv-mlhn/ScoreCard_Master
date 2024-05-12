@@ -1,15 +1,13 @@
-import 'package:calculate_card_score/data/data_sources/board_game_api.dart';
-import 'package:calculate_card_score/data/data_sources/local/local_board_game_api.dart';
 import 'package:calculate_card_score/data/models/score_board_model.dart';
 import 'package:calculate_card_score/di/service_locator.dart';
 import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
+import 'package:calculate_card_score/features/game_result/view/game_result_page.dart';
+import 'package:calculate_card_score/widgets/general_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-
 import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:calculate_card_score/data/models/player_model.dart';
@@ -56,22 +54,27 @@ class _GameDetailViewState extends State<GameDetailView>
     with GameDetailPageMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      floatingActionButton: _buildFloatingActionButton(context),
-      body: _buildBody(context),
+    return BlocBuilder<GameDetailBloc, GameDetailState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: GeneralAppBar(
+            title: 'Game Detail',
+            actions: [_buildActionAppBar(state)],
+          ),
+          floatingActionButton: _buildFloatingActionButton(context),
+          body: _buildBody(context, state),
+        );
+      },
     );
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: Text(
-        'Game Detail',
-        style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20),
+  Padding _buildActionAppBar(GameDetailState state) {
+    return Padding(
+      padding: const EdgeInsets.all(smallPadding),
+      child: IconButton(
+        icon: const Icon(Icons.list_alt_outlined),
+        onPressed: () => _onViewResult(state),
       ),
-      backgroundColor: primaryColor,
-      automaticallyImplyLeading: true,
-      iconTheme: const IconThemeData(color: primaryLightColor),
     );
   }
 
@@ -82,21 +85,17 @@ class _GameDetailViewState extends State<GameDetailView>
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return BlocBuilder<GameDetailBloc, GameDetailState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: smallPadding),
-          child: Column(
-            children: [
-              _buildNameAndTotalScore(state),
-              const SizedBox(height: smallPadding),
-              const AppDivider(),
-              Expanded(child: _buildAllRound(state)),
-            ],
-          ),
-        );
-      },
+  Widget _buildBody(BuildContext context, GameDetailState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: smallPadding),
+      child: Column(
+        children: [
+          _buildNameAndTotalScore(state),
+          const SizedBox(height: smallPadding),
+          const AppDivider(),
+          Expanded(child: _buildAllRound(state)),
+        ],
+      ),
     );
   }
 
