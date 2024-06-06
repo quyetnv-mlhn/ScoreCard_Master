@@ -1,8 +1,8 @@
-import 'package:calculate_card_score/data/data_sources/board_game_api.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
 import 'package:hive/hive.dart';
 
-import 'package:calculate_card_score/data/models/round_model.dart';
+import '../../models/round_model.dart';
+import '../../models/score_board_model.dart';
+import '../board_game_api.dart';
 
 class LocalBoardGameApi implements BoardGameApi {
   static const String boardGameBoxName = 'boardGameBox';

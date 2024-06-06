@@ -1,17 +1,18 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/di/service_locator.dart';
-import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
-import 'package:calculate_card_score/features/game_detail/view/game_detail_page.dart';
-import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
-import 'package:calculate_card_score/widgets/action_button.dart';
-import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
-import 'package:calculate_card_score/widgets/circle_avatar.dart';
-import 'package:calculate_card_score/widgets/general_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/constants/app_const.dart';
+import '../../../core/constants/app_style.dart';
+import '../../../data/models/player_model.dart';
+import '../../../data/models/score_board_model.dart';
+import '../../../di/service_locator.dart';
+import '../../../domain/repositories/board_game_repository.dart';
+import '../../../widgets/action_button.dart';
+import '../../../widgets/circle_avatar.dart';
+import '../../../widgets/general_app_bar.dart';
+import '../../game_detail/view/game_detail_page.dart';
+import '../bloc/new_game_bloc.dart';
+import '../widgets/info_player.dart';
 
 part 'new_game_page_mixin.dart';
 
@@ -124,7 +125,8 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
           child: Row(
             children: [
               Text(
-                '${_getTypeOfGameRule(gameRule)} ${gameRuleValue != '' ? ': $gameRuleValue ${_getUnit(gameRule)}' : ''}',
+                '${_getTypeOfGameRule(gameRule)} ${gameRuleValue != '' ? ': '
+                    '$gameRuleValue ${_getUnit(gameRule)}' : ''}',
                 style: AppStyle.mediumTextStyle(),
               ),
               const SizedBox(width: smallPadding),
@@ -136,14 +138,12 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
     );
   }
 
-  _onChooseGameRule(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return _buildDialogSelectGameRule(context);
-      },
-    );
-  }
+  Future<Future> _onChooseGameRule(BuildContext context) async => showDialog(
+        context: context,
+        builder: (_) {
+          return _buildDialogSelectGameRule(context);
+        },
+      );
 
   BlocProvider<NewGameBloc> _buildDialogSelectGameRule(BuildContext context) {
     return BlocProvider.value(
@@ -153,7 +153,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
           return AlertDialog(
             scrollable: true,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             title: const Text(
               'Select game rule',
@@ -245,7 +245,9 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
                   textAlign: TextAlign.center,
                   style: AppStyle.mediumTextStyle(size: 30),
                   onChanged: (value) {
-                    if (value.isNotEmpty) setState(() => isShowError = false);
+                    if (value.isNotEmpty) {
+                      setState(() => isShowError = false);
+                    }
                   },
                 ),
                 Text(_getUnit(gameRuleSelected),
@@ -273,7 +275,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
       leading: Radio<GameRule>(
         value: gameRule,
         groupValue: gameRuleSelected,
-        onChanged: (GameRule? value) {
+        onChanged: (value) {
           valueGameRuleController.clear();
           setState(() {
             gameRuleSelected = value ?? GameRule.normal;
@@ -288,7 +290,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
     );
   }
 
-  _buildAllButtonStart(BuildContext context, NewGameState state) {
+  Row _buildAllButtonStart(BuildContext context, NewGameState state) {
     return Row(
       children: [
         ActionButton(
@@ -320,7 +322,7 @@ class _NewGameViewState extends State<NewGameView> with NewGamePageMixin {
         mainAxisSpacing: smallPadding,
       ),
       itemCount: playerQuantity,
-      itemBuilder: (BuildContext ctx, index) {
+      itemBuilder: (ctx, index) {
         return InfoPlayer(
           index: index,
           textEditingController: listNamePlayerControllers[index],

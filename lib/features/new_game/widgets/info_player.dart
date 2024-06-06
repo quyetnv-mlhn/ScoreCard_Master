@@ -1,10 +1,15 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/constants/app_const.dart';
+import '../../../core/constants/app_style.dart';
+
 class InfoPlayer extends StatelessWidget {
-  const InfoPlayer({super.key, required this.index, this.onChanged, required this.textEditingController});
+  const InfoPlayer(
+      {required this.index,
+      required this.textEditingController,
+      super.key,
+      this.onChanged});
 
   final int index;
   final void Function(String)? onChanged;

@@ -12,7 +12,7 @@ mixin GameDetailPageMixin on State<GameDetailView> {
   void initState() {
     scoreBoard = widget.scoreBoard;
     countPlayer = scoreBoard.players.length;
-    for (int i = 0; i < countPlayer; ++i) {
+    for (var i = 0; i < countPlayer; ++i) {
       inputScoreEditingControllers.add(
         TextEditingController(text: 0.toString()),
       );
@@ -22,7 +22,7 @@ mixin GameDetailPageMixin on State<GameDetailView> {
 
   @override
   void dispose() {
-    for (var controller in inputScoreEditingControllers) {
+    for (final controller in inputScoreEditingControllers) {
       controller.dispose();
     }
     noteController.dispose();
@@ -69,21 +69,23 @@ mixin GameDetailPageMixin on State<GameDetailView> {
         scoreboardId: scoreBoard.id!,
       );
 
-      boardGameRepository.addRound(scoreBoard.id!, round);
+      await boardGameRepository.addRound(scoreBoard.id!, round);
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       context.read<GameDetailBloc>().add(GameDetailAddRound(round));
 
       ++roundNumber;
       _clearAllInputScore();
       Navigator.pop(context);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
   void _clearAllInputScore() {
-    for (var controller in inputScoreEditingControllers) {
+    for (final controller in inputScoreEditingControllers) {
       controller.clear();
     }
     noteController.clear();

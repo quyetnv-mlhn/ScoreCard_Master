@@ -1,5 +1,6 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:flutter/material.dart';
+
+import '../core/constants/app_const.dart';
 
 class AppDivider extends StatelessWidget {
   const AppDivider({super.key});

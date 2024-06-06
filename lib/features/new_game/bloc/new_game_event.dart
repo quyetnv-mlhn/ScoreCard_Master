@@ -5,27 +5,24 @@ sealed class NewGameEvent extends Equatable {
 }
 
 class NewGameChangeQuantityPlayer extends NewGameEvent {
-  final int playerQuantity;
-
   const NewGameChangeQuantityPlayer(this.playerQuantity);
+  final int playerQuantity;
 
   @override
   List<Object> get props => [playerQuantity];
 }
 
 class NewGameSelectGameRule extends NewGameEvent {
-  final GameRule gameRule;
-
   const NewGameSelectGameRule(this.gameRule);
+  final GameRule gameRule;
 
   @override
   List<Object> get props => [gameRule];
 }
 
 class NewGameUpdateRuleValue extends NewGameEvent {
-  final String value;
-
   const NewGameUpdateRuleValue(this.value);
+  final String value;
 
   @override
   List<Object> get props => [value];

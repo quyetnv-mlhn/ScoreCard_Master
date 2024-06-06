@@ -1,24 +1,24 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:flutter/material.dart';
 
-class ActionButton extends StatelessWidget {
-  final String text;
-  final Color color;
-  final Color textColor;
-  final VoidCallback? onPressed;
-  final FontWeight fontWeight;
-  final IconData? iconData;
+import '../core/constants/app_const.dart';
+import '../core/constants/app_style.dart';
 
+class ActionButton extends StatelessWidget {
   const ActionButton({
-    super.key,
     required this.text,
+    super.key,
     this.color = backGroundColor,
     this.textColor = primaryColor,
     this.onPressed,
     this.fontWeight = FontWeight.w500,
     this.iconData,
   });
+  final String text;
+  final Color color;
+  final Color textColor;
+  final VoidCallback? onPressed;
+  final FontWeight fontWeight;
+  final IconData? iconData;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,10 @@ class ActionButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            iconData != null
-                ? Icon(iconData, color: textColor)
-                : const SizedBox.shrink(),
+            if (iconData != null)
+              Icon(iconData, color: textColor)
+            else
+              const SizedBox.shrink(),
             Expanded(
               child: Text(
                 text,

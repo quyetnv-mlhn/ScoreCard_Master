@@ -19,9 +19,8 @@ class ScoreBoardAdapter extends TypeAdapter<ScoreBoard> {
     return ScoreBoard(
       id: fields[0] as int?,
       players: (fields[1] as List).cast<Player>(),
-      currentScore: (fields[2] as List?)
-          ?.map((dynamic e) => (e as List).cast<int>())
-          ?.toList(),
+      currentScore:
+          (fields[2] as List?)?.map((e) => (e as List).cast<int>()).toList(),
     );
   }
 

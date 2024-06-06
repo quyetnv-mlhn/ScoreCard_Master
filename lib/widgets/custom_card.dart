@@ -1,22 +1,23 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:flutter/material.dart';
 
+import '../core/constants/app_const.dart';
+import '../core/constants/app_style.dart';
+
 class CustomCard extends StatelessWidget {
+  const CustomCard({
+    required this.title,
+    required this.content,
+    super.key,
+    this.leadingIcon,
+    this.padding,
+    this.onTap,
+  });
+
   final String title;
   final Widget content;
   final Widget? leadingIcon;
   final EdgeInsets? padding;
   final VoidCallback? onTap;
-
-  const CustomCard({
-    super.key,
-    required this.title,
-    required this.content,
-    this.leadingIcon,
-    this.padding,
-    this.onTap,
-  });
 
   @override
   Widget build(BuildContext context) {

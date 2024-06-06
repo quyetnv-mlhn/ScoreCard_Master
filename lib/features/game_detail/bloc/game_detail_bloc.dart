@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
-import 'package:calculate_card_score/data/models/round_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../data/models/player_model.dart';
+import '../../../data/models/round_model.dart';
+import '../../../data/models/score_board_model.dart';
 
 part 'game_detail_event.dart';
 part 'game_detail_state.dart';
@@ -18,28 +19,30 @@ class GameDetailBloc extends Bloc<GameDetailEvent, GameDetailState> {
 
   final ScoreBoard scoreBoard;
 
-  // Handles the addition of a new round to the game details. Updates the score and players based on the new round information.
+  // Handles the addition of a new round to the game details.
+  // Updates the score and players based on the new round information.
   Future<void> _onGameDetailAddRound(
     GameDetailAddRound event,
     Emitter<GameDetailState> emit,
   ) async {
     final newRound = event.round;
-    final rounds = List.of(state.rounds);
-    rounds.add(newRound);
+    final rounds = List.of(state.rounds)..add(newRound);
 
-    ScoreBoard scoreBoard = state.scoreBoard;
+    final scoreBoard = state.scoreBoard;
     final currentScore = scoreBoard.currentScore;
     final players = scoreBoard.players;
 
-    if (currentScore == null) return;
+    if (currentScore == null) {
+      return;
+    }
 
-    for (int i = 0; i < currentScore.length; ++i) {
+    for (var i = 0; i < currentScore.length; ++i) {
       if (newRound.players[i].isWinner == true) {
-        for (int j = 0; j < currentScore[i].length; ++j) {
+        for (var j = 0; j < currentScore[i].length; ++j) {
           currentScore[i][j] += newRound.players[j].score ?? 0;
         }
       }
-      int currentScoreOfPlayer = scoreBoard.players[i].score ?? 0;
+      var currentScoreOfPlayer = scoreBoard.players[i].score ?? 0;
       currentScoreOfPlayer += newRound.players[i].score ?? 0;
       players[i] = players[i].copyWith(score: currentScoreOfPlayer);
     }

@@ -1,5 +1,6 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
 import 'package:flutter/material.dart';
+
+import '../core/constants/app_const.dart';
 
 class CircleAvatarCustom extends StatelessWidget {
   const CircleAvatarCustom({
@@ -21,11 +22,17 @@ class CircleAvatarCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int countNonNull = 0;
+    var countNonNull = 0;
 
-    if (number != null) ++countNonNull;
-    if (character != null) ++countNonNull;
-    if (icon != null) ++countNonNull;
+    if (number != null) {
+      ++countNonNull;
+    }
+    if (character != null) {
+      ++countNonNull;
+    }
+    if (icon != null) {
+      ++countNonNull;
+    }
 
     if (countNonNull != 1) {
       throw ArgumentError('number and character cannot be both value');

@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,6 +7,13 @@ part 'player_model.g.dart';
 @JsonSerializable()
 @HiveType(typeId: 2)
 class Player extends Equatable {
+  const Player({
+    required this.name,
+    this.score,
+    this.isWinner,
+  });
+
+  factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
   @HiveField(0)
   final String name;
 
@@ -16,14 +22,6 @@ class Player extends Equatable {
 
   @HiveField(2)
   final bool? isWinner;
-
-  const Player({
-    required this.name,
-    this.score,
-    this.isWinner,
-  });
-
-  factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlayerToJson(this);
 

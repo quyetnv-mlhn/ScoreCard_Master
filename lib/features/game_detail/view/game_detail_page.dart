@@ -1,31 +1,31 @@
-import 'package:calculate_card_score/data/models/score_board_model.dart';
-import 'package:calculate_card_score/di/service_locator.dart';
-import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
-import 'package:calculate_card_score/features/game_result/view/game_result_page.dart';
-import 'package:calculate_card_score/widgets/general_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/data/models/round_model.dart';
-import 'package:calculate_card_score/features/game_detail/bloc/game_detail_bloc.dart';
-import 'package:calculate_card_score/widgets/action_button.dart';
-import 'package:calculate_card_score/widgets/app_divider.dart';
-import 'package:calculate_card_score/widgets/circle_avatar.dart';
+
+import '../../../core/constants/app_const.dart';
+import '../../../core/constants/app_style.dart';
+import '../../../data/models/player_model.dart';
+import '../../../data/models/round_model.dart';
+import '../../../data/models/score_board_model.dart';
+import '../../../di/service_locator.dart';
+import '../../../domain/repositories/board_game_repository.dart';
+import '../../../widgets/action_button.dart';
+import '../../../widgets/app_divider.dart';
+import '../../../widgets/circle_avatar.dart';
+import '../../../widgets/general_app_bar.dart';
+import '../../game_result/view/game_result_page.dart';
+import '../bloc/game_detail_bloc.dart';
 
 part 'game_detail_page_mixin.dart';
 
 class GameDetailPage extends StatelessWidget {
-  final ScoreBoard scoreBoard;
-
   const GameDetailPage({
-    super.key,
     required this.scoreBoard,
+    super.key,
   });
+  final ScoreBoard scoreBoard;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +39,11 @@ class GameDetailPage extends StatelessWidget {
 }
 
 class GameDetailView extends StatefulWidget {
-  final ScoreBoard scoreBoard;
-
   const GameDetailView({
-    super.key,
     required this.scoreBoard,
+    super.key,
   });
+  final ScoreBoard scoreBoard;
 
   @override
   State<GameDetailView> createState() => _GameDetailViewState();
@@ -109,7 +108,7 @@ class _GameDetailViewState extends State<GameDetailView>
   }
 
   Widget _buildPlayerInfo(int index, GameDetailState state) {
-    final Player player = state.scoreBoard.players[index];
+    final player = state.scoreBoard.players[index];
 
     return Expanded(
       child: Column(
@@ -174,14 +173,14 @@ class _GameDetailViewState extends State<GameDetailView>
               return AlertDialog(
                 scrollable: true,
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 title: Text(
                   'Enter score for players',
                   style: AppStyle.boldTextStyle(size: 20),
                   textAlign: TextAlign.center,
                 ),
-                titlePadding: const EdgeInsets.symmetric(vertical: 15.0),
+                titlePadding: const EdgeInsets.symmetric(vertical: 15),
                 content: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.95,
                   child: Column(
@@ -221,7 +220,7 @@ class _GameDetailViewState extends State<GameDetailView>
     int index,
     GameDetailState state,
   ) {
-    final Player player = state.scoreBoard.players[index];
+    final player = state.scoreBoard.players[index];
 
     return ListTile(
       contentPadding: EdgeInsets.zero,
@@ -241,8 +240,7 @@ class _GameDetailViewState extends State<GameDetailView>
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         value: player.name,
         groupValue: groupValueChooseWinner,
-        onChanged: (String? value) =>
-            _onChangeGroupValueChooseWinner(value, state),
+        onChanged: (value) => _onChangeGroupValueChooseWinner(value, state),
       ),
     );
   }

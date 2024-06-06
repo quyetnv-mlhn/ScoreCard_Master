@@ -1,14 +1,24 @@
-import 'package:calculate_card_score/data/models/player_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'player_model.dart';
 
 part 'round_model.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 1)
-
 class Round extends Equatable {
+  const Round({
+    required this.id,
+    required this.createdAt,
+    required this.scoreboardId,
+    required this.players,
+    this.note,
+    this.isDelete = false,
+  });
+
+  factory Round.fromJson(Map<String, dynamic> json) => _$RoundFromJson(json);
   @HiveField(0)
   final int id;
 
@@ -26,17 +36,6 @@ class Round extends Equatable {
 
   @HiveField(5)
   final bool? isDelete;
-
-  const Round({
-    required this.id,
-    required this.createdAt,
-    required this.scoreboardId,
-    required this.players,
-    this.note,
-    this.isDelete = false,
-  });
-
-  factory Round.fromJson(Map<String, dynamic> json) => _$RoundFromJson(json);
   Map<String, dynamic> toJson() => _$RoundToJson(this);
 
   @override

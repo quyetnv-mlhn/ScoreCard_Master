@@ -1,15 +1,24 @@
 import 'package:equatable/equatable.dart';
-
-import 'package:calculate_card_score/data/models/player_model.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'player_model.dart';
 
 part 'score_board_model.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 0)
 class ScoreBoard extends Equatable {
+  const ScoreBoard({
+    required this.players,
+    this.id,
+    this.currentScore,
+  });
+
+  factory ScoreBoard.fromJson(Map<String, dynamic> json) =>
+      _$ScoreBoardFromJson(json);
+
   @HiveField(0)
   final int? id;
 
@@ -18,12 +27,6 @@ class ScoreBoard extends Equatable {
 
   @HiveField(2)
   final List<List<int>>? currentScore;
-
-  const ScoreBoard({
-    this.id,
-    required this.players,
-    this.currentScore,
-  });
 
   ScoreBoard copyWith({
     int? id,
@@ -36,9 +39,6 @@ class ScoreBoard extends Equatable {
       currentScore: currentScore ?? this.currentScore,
     );
   }
-
-  factory ScoreBoard.fromJson(Map<String, dynamic> json) =>
-      _$ScoreBoardFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScoreBoardToJson(this);
 

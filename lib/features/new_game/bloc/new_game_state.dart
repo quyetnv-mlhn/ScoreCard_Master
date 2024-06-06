@@ -16,15 +16,14 @@ extension GameRuleExt on GameRule {
 }
 
 final class NewGameState extends Equatable {
-  final int playerQuantity;
-  final GameRule gameRule;
-  final String gameRuleValue;
-
   const NewGameState({
     required this.playerQuantity,
     this.gameRule = GameRule.normal,
     this.gameRuleValue = '',
   });
+  final int playerQuantity;
+  final GameRule gameRule;
+  final String gameRuleValue;
 
   NewGameState copyWith({
     int? playerQuantity,

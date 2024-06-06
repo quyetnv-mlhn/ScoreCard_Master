@@ -11,7 +11,7 @@ mixin NewGamePageMixin on State<NewGameView> {
   void initState() {
     super.initState();
     valueGameRuleController = TextEditingController();
-    for (int i = 0; i < 5; ++i) {
+    for (var i = 0; i < 5; ++i) {
       listNamePlayerControllers.add(TextEditingController());
     }
   }
@@ -20,7 +20,7 @@ mixin NewGamePageMixin on State<NewGameView> {
   void dispose() {
     super.dispose();
     valueGameRuleController.dispose();
-    for (var nameController in listNamePlayerControllers) {
+    for (final nameController in listNamePlayerControllers) {
       nameController.dispose();
     }
   }
@@ -55,10 +55,12 @@ mixin NewGamePageMixin on State<NewGameView> {
 
     ScoreBoard? boardGame;
 
-    if (!context.mounted) return;
+    if (!context.mounted) {
+      return;
+    }
     if (!isQuickStart) {
-      List<String> nameList = [];
-      for (int i = 0; i < state.playerQuantity; ++i) {
+      final nameList = <String>[];
+      for (var i = 0; i < state.playerQuantity; ++i) {
         nameList.add(listNamePlayerControllers[i].text);
       }
       final error = _validateNameList(nameList);
@@ -86,7 +88,7 @@ mixin NewGamePageMixin on State<NewGameView> {
         players: List.generate(
           state.playerQuantity,
           (index) => Player(
-            name: String.fromCharCode(('A'.codeUnitAt(0) + index)),
+            name: String.fromCharCode('A'.codeUnitAt(0) + index),
           ),
         ),
         currentScore: List.generate(state.playerQuantity,
@@ -95,10 +97,10 @@ mixin NewGamePageMixin on State<NewGameView> {
     }
 
     try {
-      boardGameRepository.addGame(boardGame).then((id) {
-        print("id: $id");
+      await boardGameRepository.addGame(boardGame).then((id) {
+        debugPrint("id: $id");
         final boardGameCopy = boardGame!.copyWith(id: id);
-        print(boardGameCopy.toJson());
+        debugPrint(boardGameCopy.toJson().toString());
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -107,7 +109,7 @@ mixin NewGamePageMixin on State<NewGameView> {
         );
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -116,9 +118,10 @@ mixin NewGamePageMixin on State<NewGameView> {
       return 'Name list is empty';
     }
 
-    Set<String> nameSet = {};
+    final nameSet = <String>{};
 
-    for (String name in nameList) {
+    for (var name in nameList) {
+      name = name.trim();
       if (name.isEmpty) {
         return 'Name cannot be empty';
       }

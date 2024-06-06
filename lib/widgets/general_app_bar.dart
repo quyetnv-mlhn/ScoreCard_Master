@@ -1,12 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
 import 'package:flutter/material.dart';
+
+import '../core/constants/app_const.dart';
+import '../core/constants/app_style.dart';
 
 class GeneralAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GeneralAppBar({
-    super.key,
     required this.title,
+    super.key,
     this.actions,
   });
 
@@ -18,7 +19,7 @@ class GeneralAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20.0),
+        style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20),
       ),
       backgroundColor: primaryColor,
       automaticallyImplyLeading: true,

@@ -1,13 +1,12 @@
 part of 'game_detail_bloc.dart';
 
 class GameDetailState extends Equatable {
+  const GameDetailState({
+    required this.scoreBoard,
+    this.rounds = const <Round>[],
+  });
   final List<Round> rounds;
   final ScoreBoard scoreBoard;
-
-  const GameDetailState({
-    this.rounds = const <Round>[],
-    required this.scoreBoard,
-  });
 
   @override
   List<Object> get props => [rounds, scoreBoard];
