@@ -1,18 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import '../core/constants/app_const.dart';
-import '../core/constants/app_style.dart';
+import 'package:calculate_card_score/core/constants/app_const.dart';
+import 'package:calculate_card_score/core/constants/app_style.dart';
 
 class GeneralAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GeneralAppBar({
     required this.title,
     super.key,
     this.actions,
+    this.automaticallyImplyLeading = true,
+    this.leading,
   });
 
   final String title;
   final List<Widget>? actions;
+  final bool automaticallyImplyLeading;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +26,10 @@ class GeneralAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: AppStyle.boldTextStyle(color: primaryLightColor, size: 20),
       ),
       backgroundColor: primaryColor,
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       iconTheme: const IconThemeData(color: primaryLightColor),
       actions: actions,
+      leading: leading,
     );
   }
 

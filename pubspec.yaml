@@ -43,6 +43,7 @@ dependencies:
   equatable: ^2.0.5
   cupertino_icons: ^1.0.2
   json_annotation: ^4.8.1
+  grouped_list: ^5.1.2
 
 dev_dependencies:
   flutter_test:

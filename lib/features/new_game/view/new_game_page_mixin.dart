@@ -51,63 +51,49 @@ mixin NewGamePageMixin on State<NewGameView> {
     NewGameState state, {
     bool isQuickStart = false,
   }) async {
-    final boardGameRepository = getIt<BoardGameRepository>();
+    final nameList = isQuickStart
+        ? List.generate(state.playerQuantity,
+            (index) => String.fromCharCode('A'.codeUnitAt(0) + index))
+        : listNamePlayerControllers
+            .sublist(0, state.playerQuantity)
+            .map((controller) => controller.text)
+            .toList();
 
-    ScoreBoard? boardGame;
-
-    if (!context.mounted) {
+    final error = _validateNameList(nameList);
+    if (error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error),
+          duration: const Duration(seconds: 1),
+        ),
+      );
       return;
     }
-    if (!isQuickStart) {
-      final nameList = <String>[];
-      for (var i = 0; i < state.playerQuantity; ++i) {
-        nameList.add(listNamePlayerControllers[i].text);
-      }
-      final error = _validateNameList(nameList);
-      if (error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(error),
-            duration: const Duration(seconds: 1),
-          ),
-        );
-        return;
-      }
-      boardGame = ScoreBoard(
-        players: List.generate(
-          state.playerQuantity,
-          (index) => Player(
-            name: listNamePlayerControllers[index].text,
-          ),
-        ),
-        currentScore: List.generate(state.playerQuantity,
-            (_) => List.generate(state.playerQuantity, (_) => 0)),
-      );
-    } else {
-      boardGame = ScoreBoard(
-        players: List.generate(
-          state.playerQuantity,
-          (index) => Player(
-            name: String.fromCharCode('A'.codeUnitAt(0) + index),
-          ),
-        ),
-        currentScore: List.generate(state.playerQuantity,
-            (_) => List.generate(state.playerQuantity, (_) => 0)),
-      );
-    }
+
+    final boardGame = ScoreBoard(
+      players: nameList.map((name) => Player(name: name)).toList(),
+      currentScore: List.generate(
+        state.playerQuantity,
+        (_) => List.generate(state.playerQuantity, (_) => 0),
+      ),
+      rounds: const [],
+      id: 0,
+      timestamp: DateTime.now(),
+    );
 
     try {
-      await boardGameRepository.addGame(boardGame).then((id) {
-        debugPrint("id: $id");
-        final boardGameCopy = boardGame!.copyWith(id: id);
-        debugPrint(boardGameCopy.toJson().toString());
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GameDetailPage(scoreBoard: boardGameCopy),
-          ),
-        );
-      });
+      final boardGameRepository = getIt<BoardGameRepository>();
+      final id = await boardGameRepository.addGame(boardGame);
+      final boardGameCopy = boardGame.copyWith(id: id);
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GameDetailPage(scoreBoard: boardGameCopy),
+        ),
+      );
     } catch (e) {
       debugPrint(e.toString());
     }

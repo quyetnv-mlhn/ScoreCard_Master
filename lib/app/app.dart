@@ -1,7 +1,7 @@
+import 'package:calculate_card_score/features/history/view/history_page.dart';
 import 'package:flutter/material.dart';
 
-import '../core/constants/app_const.dart';
-import '../features/new_game/view/new_game_page.dart';
+import 'package:calculate_card_score/core/constants/app_const.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -18,7 +18,7 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const NewGamePage(),
+      home: const HistoryPage(),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

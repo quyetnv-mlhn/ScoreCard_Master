@@ -66,15 +66,16 @@ mixin GameDetailPageMixin on State<GameDetailView> {
           },
         ),
         note: noteController.text,
-        scoreboardId: scoreBoard.id!,
+        scoreboardId: scoreBoard.id,
       );
 
-      await boardGameRepository.addRound(scoreBoard.id!, round);
+      scoreBoard = scoreBoard.copyWith(rounds: [...scoreBoard.rounds, round]);
+      await boardGameRepository.updateGame(scoreBoard);
 
       if (!mounted) {
         return;
       }
-      context.read<GameDetailBloc>().add(GameDetailAddRound(round));
+      context.read<GameDetailBloc>().add(GameDetailAddRound([round]));
 
       ++roundNumber;
       _clearAllInputScore();

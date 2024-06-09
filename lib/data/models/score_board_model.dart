@@ -1,9 +1,9 @@
+import 'package:calculate_card_score/data/models/player_model.dart';
+import 'package:calculate_card_score/data/models/round_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'player_model.dart';
 
 part 'score_board_model.g.dart';
 
@@ -12,36 +12,54 @@ part 'score_board_model.g.dart';
 class ScoreBoard extends Equatable {
   const ScoreBoard({
     required this.players,
-    this.id,
-    this.currentScore,
+    required this.id,
+    required this.currentScore,
+    required this.rounds,
+    required this.timestamp,
   });
 
   factory ScoreBoard.fromJson(Map<String, dynamic> json) =>
       _$ScoreBoardFromJson(json);
 
   @HiveField(0)
-  final int? id;
+  final int id;
 
   @HiveField(1)
   final List<Player> players;
 
-  @HiveField(2)
-  final List<List<int>>? currentScore;
+  @HiveField(2, defaultValue: [])
+  final List<List<int>> currentScore;
+
+  @HiveField(3, defaultValue: [])
+  final List<Round> rounds;
+
+  @HiveField(4)
+  final DateTime timestamp;
 
   ScoreBoard copyWith({
     int? id,
     List<Player>? players,
     List<List<int>>? currentScore,
+    List<Round>? rounds,
+    DateTime? timestamp,
   }) {
     return ScoreBoard(
       id: id ?? this.id,
       players: players ?? this.players,
       currentScore: currentScore ?? this.currentScore,
+      rounds: rounds ?? this.rounds,
+      timestamp: timestamp ?? this.timestamp,
     );
   }
 
   Map<String, dynamic> toJson() => _$ScoreBoardToJson(this);
 
   @override
-  List<Object> get props => [id!, players, currentScore!];
+  List<Object> get props => [
+        id,
+        players,
+        currentScore,
+        rounds,
+        timestamp,
+      ];
 }

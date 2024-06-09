@@ -5,11 +5,11 @@ sealed class GameDetailEvent extends Equatable {
 }
 
 final class GameDetailAddRound extends GameDetailEvent {
-  const GameDetailAddRound(this.round);
-  final Round round;
+  const GameDetailAddRound(this.rounds);
+  final List<Round> rounds;
 
   @override
-  List<Object?> get props => [round];
+  List<Object?> get props => [rounds];
 }
 
 final class GameDetailChangeWinner extends GameDetailEvent {

@@ -1,6 +1,5 @@
-import '../../data/data_sources/board_game_api.dart';
-import '../../data/models/round_model.dart';
-import '../../data/models/score_board_model.dart';
+import 'package:calculate_card_score/data/data_sources/board_game_api/board_game_api.dart';
+import 'package:calculate_card_score/data/models/score_board_model.dart';
 
 class BoardGameRepository {
   BoardGameRepository(this._boardGameApi);
@@ -14,11 +13,11 @@ class BoardGameRepository {
     await _boardGameApi.deleteGame(id);
   }
 
-  Future<void> addRound(int gameId, Round round) async {
-    await _boardGameApi.addRound(gameId, round);
+  Future<void> updateGame(ScoreBoard scoreBoard) async {
+    await _boardGameApi.updateGame(scoreBoard.id, scoreBoard);
   }
 
-  Future<void> deleteRound(int roundId) async {
-    await _boardGameApi.deleteRound(roundId);
+  Future<List<dynamic>> getAllGames() async {
+    return _boardGameApi.getAllGames();
   }
 }

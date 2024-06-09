@@ -1,22 +1,23 @@
+import 'package:calculate_card_score/features/history/view/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/constants/app_const.dart';
-import '../../../core/constants/app_style.dart';
-import '../../../data/models/player_model.dart';
-import '../../../data/models/round_model.dart';
-import '../../../data/models/score_board_model.dart';
-import '../../../di/service_locator.dart';
-import '../../../domain/repositories/board_game_repository.dart';
-import '../../../widgets/action_button.dart';
-import '../../../widgets/app_divider.dart';
-import '../../../widgets/circle_avatar.dart';
-import '../../../widgets/general_app_bar.dart';
-import '../../game_result/view/game_result_page.dart';
-import '../bloc/game_detail_bloc.dart';
+import 'package:calculate_card_score/core/constants/app_const.dart';
+import 'package:calculate_card_score/core/constants/app_style.dart';
+import 'package:calculate_card_score/data/models/player_model.dart';
+import 'package:calculate_card_score/data/models/round_model.dart';
+import 'package:calculate_card_score/data/models/score_board_model.dart';
+import 'package:calculate_card_score/di/service_locator.dart';
+import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
+import 'package:calculate_card_score/widgets/action_button.dart';
+import 'package:calculate_card_score/widgets/app_divider.dart';
+import 'package:calculate_card_score/widgets/circle_avatar.dart';
+import 'package:calculate_card_score/widgets/general_app_bar.dart';
+import 'package:calculate_card_score/features/game_result/view/game_result_page.dart';
+import 'package:calculate_card_score/features/game_detail/bloc/game_detail_bloc.dart';
 
 part 'game_detail_page_mixin.dart';
 
@@ -30,7 +31,8 @@ class GameDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GameDetailBloc(scoreBoard: scoreBoard),
+      create: (context) => GameDetailBloc(scoreBoard: scoreBoard)
+        ..add(GameDetailAddRound(scoreBoard.rounds)),
       child: SafeArea(
         child: GameDetailView(scoreBoard: scoreBoard),
       ),
@@ -58,6 +60,15 @@ class _GameDetailViewState extends State<GameDetailView>
         return Scaffold(
           appBar: GeneralAppBar(
             title: 'Game Detail',
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const HistoryPage(),
+                ),
+              ),
+            ),
             actions: [_buildActionAppBar(state)],
           ),
           floatingActionButton: _buildFloatingActionButton(context),
@@ -313,7 +324,7 @@ class _GameDetailViewState extends State<GameDetailView>
     return Row(
       children: [
         ActionButton(
-          text: "CANCEL",
+          text: 'CANCEL',
           iconData: Icons.close,
           onPressed: _onCancelInputScore,
         ),

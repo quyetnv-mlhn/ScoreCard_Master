@@ -17,23 +17,32 @@ class ScoreBoardAdapter extends TypeAdapter<ScoreBoard> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ScoreBoard(
-      id: fields[0] as int?,
       players: (fields[1] as List).cast<Player>(),
-      currentScore:
-          (fields[2] as List?)?.map((e) => (e as List).cast<int>()).toList(),
+      id: fields[0] as int,
+      currentScore: fields[2] == null
+          ? []
+          : (fields[2] as List)
+              .map((dynamic e) => (e as List).cast<int>())
+              .toList(),
+      rounds: fields[3] == null ? [] : (fields[3] as List).cast<Round>(),
+      timestamp: fields[4] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScoreBoard obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.players)
       ..writeByte(2)
-      ..write(obj.currentScore);
+      ..write(obj.currentScore)
+      ..writeByte(3)
+      ..write(obj.rounds)
+      ..writeByte(4)
+      ..write(obj.timestamp);
   }
 
   @override
@@ -52,13 +61,17 @@ class ScoreBoardAdapter extends TypeAdapter<ScoreBoard> {
 // **************************************************************************
 
 ScoreBoard _$ScoreBoardFromJson(Map<String, dynamic> json) => ScoreBoard(
-      id: json['id'] as int?,
       players: (json['players'] as List<dynamic>)
           .map((e) => Player.fromJson(e as Map<String, dynamic>))
           .toList(),
-      currentScore: (json['currentScore'] as List<dynamic>?)
-          ?.map((e) => (e as List<dynamic>).map((e) => e as int).toList())
+      id: json['id'] as int,
+      currentScore: (json['currentScore'] as List<dynamic>)
+          .map((e) => (e as List<dynamic>).map((e) => e as int).toList())
           .toList(),
+      rounds: (json['rounds'] as List<dynamic>)
+          .map((e) => Round.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      timestamp: DateTime.parse(json['timestamp'] as String),
     );
 
 Map<String, dynamic> _$ScoreBoardToJson(ScoreBoard instance) =>
@@ -66,4 +79,6 @@ Map<String, dynamic> _$ScoreBoardToJson(ScoreBoard instance) =>
       'id': instance.id,
       'players': instance.players,
       'currentScore': instance.currentScore,
+      'rounds': instance.rounds,
+      'timestamp': instance.timestamp.toIso8601String(),
     };
