@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
@@ -17,7 +18,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2.14.0
         with:
-          flutter-version: 3.19.6
+          flutter-version: 3.19.0
           channel: stable
 
       - name: Flutter --version
