@@ -1,5 +1,5 @@
-import 'package:calculate_card_score/data/data_sources/board_game_api/board_game_api.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
+import 'package:score_card_master/data/data_sources/board_game_api/board_game_api.dart';
+import 'package:score_card_master/data/models/score_board_model.dart';
 import 'package:hive/hive.dart';
 
 class LocalBoardGameApi implements BoardGameApi {

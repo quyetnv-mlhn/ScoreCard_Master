@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "5714430121",
+    "project_id": "score-card-master",
+    "storage_bucket": "score-card-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5714430121:android:c83a5b1e5594da6da641b8",
+        "android_client_info": {
+          "package_name": "com.quyetnv.scoreCardMaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0IrwyyJ5uCHT_6ME4PyNc8F8Kagdo3V8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

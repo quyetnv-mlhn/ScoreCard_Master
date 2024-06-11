@@ -17,7 +17,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2.14.0
         with:
-          flutter-version: 3.19.0
+          flutter-version: 3.19.6
           channel: stable
 
       - name: Flutter --version
@@ -27,4 +27,13 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk
+        run: flutter build apk --release
+
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }} # App id from Firebase General Settings
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }} # Firebase service account credentials
+          file: build/app/outputs/flutter-apk/app-release.apk # Path to the APK file
+          groups: testers # Distribution groups (optional)
+          releaseNotes: "New release notes" # Release notes (optional)

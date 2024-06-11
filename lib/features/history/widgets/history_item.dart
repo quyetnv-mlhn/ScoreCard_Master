@@ -1,6 +1,6 @@
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
+import 'package:score_card_master/core/constants/app_const.dart';
+import 'package:score_card_master/core/constants/app_style.dart';
+import 'package:score_card_master/data/models/score_board_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/data/models/round_model.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
+import 'package:score_card_master/data/models/player_model.dart';
+import 'package:score_card_master/data/models/round_model.dart';
+import 'package:score_card_master/data/models/score_board_model.dart';
 
 part 'game_detail_event.dart';
 part 'game_detail_state.dart';
