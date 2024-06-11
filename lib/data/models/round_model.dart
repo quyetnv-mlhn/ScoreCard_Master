@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:calculate_card_score/data/models/player_model.dart';
+import 'package:score_card_master/data/models/player_model.dart';
 
 part 'round_model.g.dart';
 

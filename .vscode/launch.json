@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "calculate_card_score",
+            "name": "score_card_master",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "calculate_card_score (profile mode)",
+            "name": "score_card_master (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "calculate_card_score (release mode)",
+            "name": "score_card_master (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

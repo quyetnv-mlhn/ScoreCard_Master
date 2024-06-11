@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:calculate_card_score/data/models/score_board_model.dart';
-import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
+import 'package:score_card_master/data/models/score_board_model.dart';
+import 'package:score_card_master/domain/repositories/board_game_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

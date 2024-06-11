@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
-import 'package:calculate_card_score/di/service_locator.dart';
-import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
-import 'package:calculate_card_score/widgets/action_button.dart';
-import 'package:calculate_card_score/widgets/circle_avatar.dart';
-import 'package:calculate_card_score/widgets/general_app_bar.dart';
-import 'package:calculate_card_score/features/game_detail/view/game_detail_page.dart';
-import 'package:calculate_card_score/features/new_game/bloc/new_game_bloc.dart';
-import 'package:calculate_card_score/features/new_game/widgets/info_player.dart';
+import 'package:score_card_master/core/constants/app_const.dart';
+import 'package:score_card_master/core/constants/app_style.dart';
+import 'package:score_card_master/data/models/player_model.dart';
+import 'package:score_card_master/data/models/score_board_model.dart';
+import 'package:score_card_master/di/service_locator.dart';
+import 'package:score_card_master/domain/repositories/board_game_repository.dart';
+import 'package:score_card_master/widgets/action_button.dart';
+import 'package:score_card_master/widgets/circle_avatar.dart';
+import 'package:score_card_master/widgets/general_app_bar.dart';
+import 'package:score_card_master/features/game_detail/view/game_detail_page.dart';
+import 'package:score_card_master/features/new_game/bloc/new_game_bloc.dart';
+import 'package:score_card_master/features/new_game/widgets/info_player.dart';
 
 part 'new_game_page_mixin.dart';
 

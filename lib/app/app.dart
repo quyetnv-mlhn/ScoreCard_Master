@@ -1,7 +1,7 @@
-import 'package:calculate_card_score/features/history/view/history_page.dart';
+import 'package:score_card_master/features/history/view/history_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:calculate_card_score/core/constants/app_const.dart';
+import 'package:score_card_master/core/constants/app_const.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

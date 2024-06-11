@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAsS0vUiv6IB1c4-9BKBBh64QTBf_Z6ock</string>
+	<key>GCM_SENDER_ID</key>
+	<string>5714430121</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.quyetnv.scoreCardMaster</string>
+	<key>PROJECT_ID</key>
+	<string>score-card-master</string>
+	<key>STORAGE_BUCKET</key>
+	<string>score-card-master.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:5714430121:ios:2acf09a21115438aa641b8</string>
+</dict>
+</plist>

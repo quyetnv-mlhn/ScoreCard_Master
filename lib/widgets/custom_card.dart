@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
+import 'package:score_card_master/core/constants/app_const.dart';
+import 'package:score_card_master/core/constants/app_style.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({

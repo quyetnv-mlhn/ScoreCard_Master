@@ -1,4 +1,4 @@
-package quyetnv.calculate_score
+package com.quyetnv.scoreCardMaster
 
 import io.flutter.embedding.android.FlutterActivity
 

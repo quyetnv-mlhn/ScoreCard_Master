@@ -1,23 +1,23 @@
-import 'package:calculate_card_score/features/history/view/history_page.dart';
+import 'package:score_card_master/features/history/view/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/data/models/round_model.dart';
-import 'package:calculate_card_score/data/models/score_board_model.dart';
-import 'package:calculate_card_score/di/service_locator.dart';
-import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
-import 'package:calculate_card_score/widgets/action_button.dart';
-import 'package:calculate_card_score/widgets/app_divider.dart';
-import 'package:calculate_card_score/widgets/circle_avatar.dart';
-import 'package:calculate_card_score/widgets/general_app_bar.dart';
-import 'package:calculate_card_score/features/game_result/view/game_result_page.dart';
-import 'package:calculate_card_score/features/game_detail/bloc/game_detail_bloc.dart';
+import 'package:score_card_master/core/constants/app_const.dart';
+import 'package:score_card_master/core/constants/app_style.dart';
+import 'package:score_card_master/data/models/player_model.dart';
+import 'package:score_card_master/data/models/round_model.dart';
+import 'package:score_card_master/data/models/score_board_model.dart';
+import 'package:score_card_master/di/service_locator.dart';
+import 'package:score_card_master/domain/repositories/board_game_repository.dart';
+import 'package:score_card_master/widgets/action_button.dart';
+import 'package:score_card_master/widgets/app_divider.dart';
+import 'package:score_card_master/widgets/circle_avatar.dart';
+import 'package:score_card_master/widgets/general_app_bar.dart';
+import 'package:score_card_master/features/game_result/view/game_result_page.dart';
+import 'package:score_card_master/features/game_detail/bloc/game_detail_bloc.dart';
 
 part 'game_detail_page_mixin.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:calculate_card_score/core/constants/app_const.dart';
-import 'package:calculate_card_score/core/constants/app_style.dart';
+import 'package:score_card_master/core/constants/app_const.dart';
+import 'package:score_card_master/core/constants/app_style.dart';
 
 class InfoPlayer extends StatelessWidget {
   const InfoPlayer(

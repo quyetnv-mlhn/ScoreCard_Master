@@ -1,6 +1,6 @@
 {
-    "name": "calculate_card_score",
-    "short_name": "calculate_card_score",
+    "name": "score_card_master",
+    "short_name": "score_card_master",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

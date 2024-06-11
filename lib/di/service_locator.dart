@@ -1,5 +1,5 @@
-import 'package:calculate_card_score/data/data_sources/board_game_api/local/local_board_game_api.dart';
-import 'package:calculate_card_score/domain/repositories/board_game_repository.dart';
+import 'package:score_card_master/data/data_sources/board_game_api/local/local_board_game_api.dart';
+import 'package:score_card_master/domain/repositories/board_game_repository.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;

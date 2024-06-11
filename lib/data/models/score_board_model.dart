@@ -1,5 +1,5 @@
-import 'package:calculate_card_score/data/models/player_model.dart';
-import 'package:calculate_card_score/data/models/round_model.dart';
+import 'package:score_card_master/data/models/player_model.dart';
+import 'package:score_card_master/data/models/round_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
