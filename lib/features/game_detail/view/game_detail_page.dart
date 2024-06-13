@@ -1,23 +1,22 @@
-import 'package:score_card_master/features/history/view/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-
 import 'package:score_card_master/core/constants/app_const.dart';
 import 'package:score_card_master/core/constants/app_style.dart';
+import 'package:score_card_master/data/data_sources/board_game_api/local/local_board_game_api.dart';
 import 'package:score_card_master/data/models/player_model.dart';
 import 'package:score_card_master/data/models/round_model.dart';
 import 'package:score_card_master/data/models/score_board_model.dart';
 import 'package:score_card_master/di/service_locator.dart';
-import 'package:score_card_master/domain/repositories/board_game_repository.dart';
+import 'package:score_card_master/features/game_detail/bloc/game_detail_bloc.dart';
+import 'package:score_card_master/features/game_result/view/game_result_page.dart';
+import 'package:score_card_master/features/history/view/history_page.dart';
 import 'package:score_card_master/widgets/action_button.dart';
 import 'package:score_card_master/widgets/app_divider.dart';
 import 'package:score_card_master/widgets/circle_avatar.dart';
 import 'package:score_card_master/widgets/general_app_bar.dart';
-import 'package:score_card_master/features/game_result/view/game_result_page.dart';
-import 'package:score_card_master/features/game_detail/bloc/game_detail_bloc.dart';
 
 part 'game_detail_page_mixin.dart';
 
@@ -31,8 +30,10 @@ class GameDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GameDetailBloc(scoreBoard: scoreBoard)
-        ..add(GameDetailAddRound(scoreBoard.rounds)),
+      create: (context) => GameDetailBloc(
+        scoreBoard: scoreBoard,
+        localBoardGameApi: getIt<LocalBoardGameApi>(),
+      )..add(GameDetailLoadOldGame(scoreBoard: scoreBoard)),
       child: SafeArea(
         child: GameDetailView(scoreBoard: scoreBoard),
       ),

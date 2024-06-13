@@ -44,8 +44,6 @@ mixin GameDetailPageMixin on State<GameDetailView> {
   }
 
   Future<void> _onSaveInputScore() async {
-    final boardGameRepository = getIt<BoardGameRepository>();
-
     _checkValidateInputScore();
 
     try {
@@ -69,13 +67,10 @@ mixin GameDetailPageMixin on State<GameDetailView> {
         scoreboardId: scoreBoard.id,
       );
 
-      scoreBoard = scoreBoard.copyWith(rounds: [...scoreBoard.rounds, round]);
-      await boardGameRepository.updateGame(scoreBoard);
-
       if (!mounted) {
         return;
       }
-      context.read<GameDetailBloc>().add(GameDetailAddRound([round]));
+      context.read<GameDetailBloc>().add(GameDetailAddRound(round));
 
       ++roundNumber;
       _clearAllInputScore();

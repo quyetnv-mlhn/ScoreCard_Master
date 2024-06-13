@@ -1,6 +1,6 @@
+import 'package:hive/hive.dart';
 import 'package:score_card_master/data/data_sources/board_game_api/board_game_api.dart';
 import 'package:score_card_master/data/models/score_board_model.dart';
-import 'package:hive/hive.dart';
 
 class LocalBoardGameApi implements BoardGameApi {
   static const String boardGameBoxName = 'boardGameBox';
@@ -9,7 +9,7 @@ class LocalBoardGameApi implements BoardGameApi {
   late Box<ScoreBoard> boardGameBox;
 
   Future<void> initialize() async {
-    boardGameBox = await Hive.openBox(boardGameBoxName);
+    boardGameBox = await Hive.openBox<ScoreBoard>(boardGameBoxName);
   }
 
   @override
